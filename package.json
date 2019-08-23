@@ -1,0 +1,22 @@
+{
+  "name": "subreddit-list",
+  "version": "1.0.0",
+  "description": "A list of all the subreddits, and a program that generates all the subreddits",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node check-for-dupes.js"
+  },
+  "keywords": [
+    "reddit",
+    "list",
+    "subreddits",
+    "all"
+  ],
+  "author": "JaPNaA",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^12.7.2"
+  },
+  "private": true
+}
