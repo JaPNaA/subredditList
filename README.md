@@ -17,3 +17,7 @@ Running it after it finishes will cause the program to update the `subreddits.tx
 \*note: the first 24 lines of [data/subreddits.txt](data/subreddits.txt) was entered manually.
 
 <small> It bugged out on the last page, and I'm not going to debug a program that takes hours to run </small>
+
+## Contributing
+
+If you update the list with `npm start`, please submit a pull request with the updated `subreddits.txt` file.
