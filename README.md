@@ -1,10 +1,10 @@
 # SubredditList
 
-A list of all the subreddits, and a program that generates all the subreddits.
+[A list of all the subreddits](data/subreddits.txt), and a program that generates all the subreddits.
 
 ---
 
-`subreddits.txt` is a file containing all the subreddits from reddit.com/subreddits/new
+[`subreddits.txt`](data/subreddits.txt) is a file containing all the subreddits from reddit.com/subreddits/new
 
 The file is sorted in chronological order, with the oldest first.
 
