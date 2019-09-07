@@ -6,23 +6,24 @@ const SOURCE_URL = "https://www.reddit.com/subreddits/new.json";
 const CURRENT_STATE_FILE = "./data/state.txt";
 const NEW_SUBREDDITS_FILE = "./data/new-subreddits.txt";
 const FINAL_SUBREDDITS_FILE = "./data/subreddits.txt";
+const NEWEST_SUBREDDIT_SET_SIZE = 20;
 
 const https = require("https");
 const fs = require("fs");
 
 const newSubredditsWriteStream = fs.createWriteStream(NEW_SUBREDDITS_FILE, { flags: "a" });
 
-/** @type {string | undefined} */
-let newestSubreddit;
+/** @type {Set<string> | undefined} */
+let newestSubreddits;
 
 let currentCount = 0;
 
 async function main() {
     let data = getState();
-    newestSubreddit = await getLastWrittenSubreddit();
+    newestSubreddits = await createNewestSubredditsSet();
 
-    if (newestSubreddit) {
-        console.log("Fetching until " + newestSubreddit);
+    if (newestSubreddits.size > 0) {
+        console.log("Fetching until " + newestSubreddits.values().next().value);
     }
 
     do {
@@ -93,7 +94,7 @@ async function extractDataFrom(url) {
             subreddit = listing.data.url;
         }
 
-        if (subreddit === newestSubreddit) {
+        if (newestSubreddits.has(subreddit)) {
             done = true;
             break;
         }
@@ -140,7 +141,10 @@ function getState() {
     return JSON.parse(strStateData);
 }
 
-async function getLastWrittenSubreddit() {
+/**
+ * @returns {Promise<Set<string>>}
+ */
+async function createNewestSubredditsSet() {
     return new Promise((res, rej) => {
         let stream;
         try {
@@ -149,30 +153,21 @@ async function getLastWrittenSubreddit() {
             return;
         }
 
-        /** @type {Buffer[]} */
-        let chunks = [];
+        let body = "";
 
         stream.on("data", function (chunk) {
-            chunks.push(chunk);
+            body += chunk;
         });
 
         stream.on("end", function () {
-            /** @type {string} */
-            let str = chunks[chunks.length - 1].toString();
-            if (str.split("\n").length <= 2) {
-                str = chunks[chunks.length - 1] + str;
-            }
-            
-            const subs = str.split("\n");
-            
-            for (let i = subs.length; i >= 0; i--) {
-                if (subs[i]) {
-                    res(subs[i]);
-                    return;
-                }
+            const subs = getTail(body, NEWEST_SUBREDDIT_SET_SIZE);
+            const set = new Set();
+
+            for (const sub of subs) {
+                set.add(sub);
             }
 
-            throw new Error("unreachable");
+            res(set);
         });
 
         stream.on("error", function (err) {
@@ -205,6 +200,28 @@ function fetch(url) {
 
         resStream.on("error", err => reject(err));
     }));
+}
+
+/**
+ * @param {string} str 
+ * @param {number} n number of lines
+ * @returns {string[]} tail lines
+ */
+function getTail(str, n) {
+    const arr = [];
+    let lastIndex = str.length;
+
+    for (let i = 0; i < n && lastIndex > 0;) {
+        const currIndex = str.lastIndexOf("\n", lastIndex - 1);
+        const slicedStr = str.slice(currIndex + 1, lastIndex);
+        if (slicedStr) {
+            arr.push(slicedStr);
+            i++;
+        }
+        lastIndex = currIndex;
+    }
+
+    return arr;
 }
 
 /**
