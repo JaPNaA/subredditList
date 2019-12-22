@@ -57,9 +57,9 @@ async function main() {
 function newExtractDataRequestAfter(url, prevData) {
     if (prevData) {
         currentCount += prevData.dist;
-        return extractDataFrom(url + "?limit=2000&count=" + currentCount + "&after=" + prevData.after);
+        return extractDataFrom(url + "?limit=100&count=" + currentCount + "&after=" + prevData.after);
     } else {
-        return extractDataFrom(url + "?limit=2000");
+        return extractDataFrom(url + "?limit=100");
     }
 }
 
