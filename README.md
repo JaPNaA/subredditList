@@ -21,3 +21,12 @@ Running it after it finishes will cause the program to update the `subreddits.tx
 ## Contributing
 
 If you update the list with `npm start`, please submit a pull request with the updated `subreddits.txt` file.
+
+## Known Dupes
+
+`Dupe: Redskins on line 1832177 and line 17759`
+
+The cause seems to be due to a subreddit rename.
+
+See https://www.reddit.com/r/Redskins/comments/i33r2q/we_have_a_new_home/
+
