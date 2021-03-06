@@ -6,7 +6,7 @@ const SOURCE_URL = "https://www.reddit.com/subreddits/new.json";
 const CURRENT_STATE_FILE = "./data/state.txt";
 const NEW_SUBREDDITS_FILE = "./data/new-subreddits.txt";
 const FINAL_SUBREDDITS_FILE = "./data/subreddits.txt";
-const NEWEST_SUBREDDIT_SET_SIZE = 20;
+const NEWEST_SUBREDDIT_SET_SIZE = 100;
 
 const https = require("https");
 const fs = require("fs");
@@ -203,7 +203,7 @@ function fetch(url) {
 }
 
 /**
- * @param {string} str 
+ * @param {string} str
  * @param {number} n number of lines
  * @returns {string[]} tail lines
  */
