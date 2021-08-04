@@ -30,3 +30,5 @@ The cause seems to be due to a subreddit rename.
 
 See https://www.reddit.com/r/Redskins/comments/i33r2q/we_have_a_new_home/
 
+A large number of dupes beginning at 4de3b1d12c643c0ee88374463f80706ac789ca97. The list has be reverted to before that commit.
+
